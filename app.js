@@ -1,18 +1,51 @@
+// const { response } = require("express");
 const express = require("express");
 const https = require("https");
-
+const mailchimp = require("@mailchimp/mailchimp_marketing");
 const app = express();
+const apiKey = process.env.MAILCHIMP_API_KEY;
+const listId = process.env.CHIMP_LIST_ID;
 
 app.use(express.static(__dirname));
 
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
+//Setting up MailChimp
+mailchimp.setConfig({
+    apiKey: apiKey,
+    server: "us21"
+});
 
-app.get("/", function(req, res){
-    
+app.get("/", function (req, res) {
     res.sendFile(__dirname + "/signup.html");
+});
 
-})
 
-app.listen(3000, function(){
-    console.log("Server is running on port 3000");
-})
+app.post("/", function (req, res) {
+    //*****************************CHANGE THIS ACCORDING TO THE VALUES YOU HAVE ENTERED IN THE INPUT ATTRIBUTE IN HTML******************************
+    const name = req.body.fName;
+    const surname = req.body.lName;
+    const email = req.body.eMail;
+    //Uploading the data to the server
+    async function run() {
+        const response = await mailchimp.lists.addListMember(listId, {
+            email_address: email,
+            status: "subscribed",
+            merge_fields: {
+                FNAME: name,
+                LNAME: surname
+            }
+        });
+        //If all goes well logging the contact's id
+        res.sendFile(__dirname + "/success.html")
+        console.log(
+            `Successfully added contact as an audience member. The contact's id is ${response.id
+            }.`
+        );
+    }
+    //Running the function and catching the errors (if any)
+    run().catch(e => res.sendFile(__dirname + "/failure.html"));
+});
+
+app.listen(process.env.PORT || 3000, function () {
+    console.log("Server is running at port 3000");
+});
