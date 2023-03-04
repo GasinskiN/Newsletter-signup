@@ -17,23 +17,23 @@
   
     <main class="form-signin w-100 m-auto main-body">
         <img class="mb-4" src="images/car.png" width="72" height="72">
-        <form>
-        <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
 
-        <div class="form-floating">
-            <input type="text" class="form-control" id="floatingName" placeholder="John">
-            <label for="floatingName">Name</label>
-        </div>
-        <div class="form-floating mt-1">
-            <input type="text" class="form-control" id="floatingSurname" placeholder="Doe">
-            <label for="floatingSurname">Surname</label>
-        </div>
-        <div class="form-floating mt-1 mb-3">
-            <input type="email" class="form-control" id="floatingEmail" placeholder="johndoe@defnotgmail.com">
-            <label for="floatingEmail">E-Mail</label>
-        </div>
-        <button class="w-100 btn btn-lg btn-secondary" type="submit">Sign up</button>
-        <p class="mt-5 mb-3 text-muted">&copy; 2023</p>
+        <form action="/" method="post">
+            <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
+            <div class="form-floating">
+                <input type="text" name="fName" class="form-control " id="floatingName" placeholder="John" autofocus>
+                <label for="floatingName">Name</label>
+            </div>
+            <div class="form-floating mt-1">
+                <input type="text" name="lName" class="form-control" id="floatingSurname" placeholder="Doe">
+                <label for="floatingSurname">Surname</label>
+            </div>
+            <div class="form-floating mt-1 mb-3">
+                <input type="email" name="eMail" class="form-control" id="floatingEmail" placeholder="johndoe@defnotgmail.com">
+                <label for="floatingEmail">E-Mail</label>
+            </div>
+            <button class="w-100 btn btn-lg btn-secondary" type="submit">Sign up</button>
+            <p class="mt-5 mb-3 text-muted">&copy; Norman</p>
         </form>
     </main>
     <footer>
