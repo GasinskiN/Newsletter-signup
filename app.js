@@ -1,4 +1,3 @@
-// const { response } = require("express");
 const express = require("express");
 const https = require("https");
 const mailchimp = require("@mailchimp/mailchimp_marketing");
@@ -9,6 +8,7 @@ const listId = process.env.CHIMP_LIST_ID;
 app.use(express.static(__dirname));
 
 app.use(express.urlencoded({ extended: true }));
+
 //Setting up MailChimp
 mailchimp.setConfig({
     apiKey: apiKey,
@@ -21,10 +21,10 @@ app.get("/", function (req, res) {
 
 
 app.post("/", function (req, res) {
-    //*****************************CHANGE THIS ACCORDING TO THE VALUES YOU HAVE ENTERED IN THE INPUT ATTRIBUTE IN HTML******************************
-    const name = req.body.fName;
+    const name = req.body.fName
     const surname = req.body.lName;
     const email = req.body.eMail;
+
     //Uploading the data to the server
     async function run() {
         const response = await mailchimp.lists.addListMember(listId, {
@@ -35,6 +35,7 @@ app.post("/", function (req, res) {
                 LNAME: surname
             }
         });
+
         //If all goes well logging the contact's id
         res.sendFile(__dirname + "/success.html")
         console.log(
@@ -42,8 +43,14 @@ app.post("/", function (req, res) {
             }.`
         );
     }
+
     //Running the function and catching the errors (if any)
     run().catch(e => res.sendFile(__dirname + "/failure.html"));
+});
+
+// Redirect from failure to main page
+app.post("/failure", function(req, res){
+    res.redirect("/");
 });
 
 app.listen(process.env.PORT || 3000, function () {
